@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>neurosaga</title>
+    <style>
+        .h1 {
+            color: #f00
+        }
+    </style>
+</head>
+<body>
+    <div style="text-align: center;"><h1 class="h1">Result!!!!!!!</h1></div>
+    <div style="text-align: center;">
+
+        <video autoplay id="video" style="display: none"></video>
+        <img src="">
+    </div>
+    <script>
+        const video = document.querySelector('#video');
+        const img = document.querySelector('img');
+        navigator.mediaDevices.getUserMedia({video: true}).then((stream) => video.srcObject = new MediaStream(stream));
+        const getFrame = () => {
+            const canvas = document.createElement('canvas');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            canvas.getContext('2d').drawImage(video, 0, 0);
+            return canvas.toDataURL('image/png');
+        }
+        const WS_URL = 'wss://192.168.100.5:8001';
+        const FPS = 12;
+        const ws = new WebSocket(WS_URL);
+        ws.onopen = () => {
+            console.log('Connected to ${WS_URL}');
+            setInterval(() => {
+                ws.send(getFrame());
+            }, 1000/ FPS);
+        }
+        ws.onmessage = message => {
+            console.log('data:image/png;base64,'+message.data)
+            img.src = 'data:image/png;base64,'+message.data
+
+        }
+    </script>
+</body>
+</html>
