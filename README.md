@@ -1,6 +1,8 @@
 # Neurosaga
 Проект позволяющий обучать модель распозновать жесты, эмоции и картинки
+
 ![1_(4)_(1) (5)](https://user-images.githubusercontent.com/60570949/167390466-648c575b-ccb9-4720-8aec-41a1396b51dc.gif)
+
 # Требования: 
 * python 3.9.5
 * tensorflow
